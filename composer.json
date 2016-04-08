@@ -1,0 +1,23 @@
+{
+    "name": "sensiolabs-de/astrunner",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "nikic/php-parser": "~2.0",
+        "symfony/event-dispatcher": "^2.7"
+    },
+    "authors": [
+        {
+            "name": "timglabisch",
+            "email": "astrunner+tim.glabisch@sensiolabs.de"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "4.8.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "SensioLabs\\AstRunner\\": "src/"
+        }
+    }
+}
