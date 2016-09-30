@@ -3,7 +3,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "nikic/php-parser": "~2.0",
+        "nikic/php-parser": "3.0.x-dev",
         "symfony/event-dispatcher": "^2.7"
     },
     "authors": [

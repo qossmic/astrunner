@@ -39,6 +39,28 @@ class AstHelper
         return $collectedNodes;
     }
 
+    public static function walkNodes($nodes, callable $cb, \ArrayObject $bag = null)
+    {
+        if (!$bag) {
+            $bag = new \ArrayObject();
+        }
+
+        foreach ($nodes as $i => &$node) {
+            if (is_array($node)) {
+                static::walkNodes($node, $cb, $bag);
+            } elseif ($node instanceof Node) {
+
+                if ($cb($node)) {
+                    $bag->append($node);
+                }
+
+                static::walkNodes(static::getSubNodes($node), $cb, $bag);
+            }
+        }
+
+        return $bag;
+    }
+
     /**
      * @param Node\Stmt\ClassLike $klass
      * @return AstInheritInterface[]
