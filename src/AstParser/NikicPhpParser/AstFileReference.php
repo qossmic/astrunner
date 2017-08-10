@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace SensioLabs\AstRunner\AstParser\NikicPhpParser;
 

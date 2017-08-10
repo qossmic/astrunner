@@ -3,20 +3,19 @@
 namespace SensioLabs\AstRunner\AstParser\NikicPhpParser;
 
 use PhpParser\Node;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
 use SensioLabs\AstRunner\AstParser\AstClassReferenceInterface;
+use SensioLabs\AstRunner\AstParser\AstFileReferenceInterface;
 use SensioLabs\AstRunner\AstParser\AstParserInterface;
 
 class NikicPhpParser implements AstParserInterface
 {
     private static $parser = null;
-
     private static $traverser = null;
-
     private static $inheritanceByClassnameMap = [];
-
     private static $fileAstMap = [];
-
     private static $classAstMap = [];
 
     /**
@@ -34,7 +33,7 @@ class NikicPhpParser implements AstParserInterface
     }
 
     /**
-     * @return null|\PhpParser\NodeTraverser
+     * @return \PhpParser\NodeTraverser
      */
     private static function getTraverser()
     {
@@ -42,8 +41,8 @@ class NikicPhpParser implements AstParserInterface
             return self::$traverser;
         }
 
-        self::$traverser = new \PhpParser\NodeTraverser;
-        self::$traverser->addVisitor(new \PhpParser\NodeVisitor\NameResolver());
+        self::$traverser = new NodeTraverser();
+        self::$traverser->addVisitor(new NameResolver());
 
         return self::$traverser;
     }
@@ -96,10 +95,10 @@ class NikicPhpParser implements AstParserInterface
     }
 
     /**
-     * @param AstFileReference $astReference
+     * @param AstFileReferenceInterface $astReference
      * @return array
      */
-    public function getAstByFile(AstFileReference $astReference)
+    public function getAstByFile(AstFileReferenceInterface $astReference)
     {
         if (!isset(self::$fileAstMap[$astReference->getFilepath()])) {
             return [];
