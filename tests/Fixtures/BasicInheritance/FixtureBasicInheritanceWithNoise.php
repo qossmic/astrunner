@@ -1,8 +1,8 @@
 <?php 
 
-namespace SensioLabs\AstRunner\Tests\Visitor\Fixtures;
+namespace Tests\SensioLabs\AstRunner\Visitor\Fixtures;
 
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceWithNoiseFoo1 as foo1;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceWithNoiseFoo1 as foo1;
 
 class FixtureBasicInheritanceWithNoiseFoo1 {}
 class FixtureBasicInheritanceWithNoiseFoo2 {}

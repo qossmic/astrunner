@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-namespace SensioLabs\AstRunner\Tests;
+namespace Tests\SensioLabs\AstRunner;
 
 trait ArrayAsserts
 {
