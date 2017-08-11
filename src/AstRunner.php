@@ -14,18 +14,19 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class AstRunner
 {
     /**
-     * @param AstParserInterface $astParser
+     * @param AstParserInterface       $astParser
      * @param EventDispatcherInterface $dispatcher
-     * @param array $files
+     * @param array                    $files
+     *
      * @return AstMap
      */
     public function createAstMapByFiles(
         AstParserInterface $astParser,
         EventDispatcherInterface $dispatcher,
         array $files
-    )
-    {
+    ) {
         $dispatcher->dispatch(PreCreateAstMapEvent::class, new PreCreateAstMapEvent(count($files)));
+
         $astMap = new AstMap($astParser);
 
         foreach ($files as $file) {

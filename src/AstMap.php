@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace SensioLabs\AstRunner;
 
@@ -11,7 +11,6 @@ use SensioLabs\AstRunner\AstParser\NikicPhpParser\AstClassReference;
 
 class AstMap
 {
-
     /** @var AstClassReference[] */
     private $astClassReferences = [];
 
@@ -21,25 +20,16 @@ class AstMap
     /** @var AstParserInterface */
     private $astParser;
 
-    /**
-     * @param AstParserInterface $astParser
-     */
     public function __construct(AstParserInterface $astParser)
     {
         $this->astParser = $astParser;
     }
 
-    /**
-     * @param AstClassReferenceInterface $astClassReference
-     */
     public function addAstClassReference(AstClassReferenceInterface $astClassReference)
     {
         $this->astClassReferences[$astClassReference->getClassName()] = $astClassReference;
     }
 
-    /**
-     * @param AstFileReferenceInterface $astFileReference
-     */
     public function addAstFileReferences(AstFileReferenceInterface $astFileReference)
     {
         $this->astFileReferences[$astFileReference->getFilepath()] = $astFileReference;
@@ -97,16 +87,15 @@ class AstMap
 
     /**
      * @param AstInheritInterface $inheritDependency
-     * @param \ArrayObject|null $alreadyResolved
-     * @param \SplStack|null $path
+     * @param \ArrayObject|null   $alreadyResolved
+     * @param \SplStack|null      $path
      * @return array
      */
     private function resolveDepsRecursive(
         AstInheritInterface $inheritDependency,
         \ArrayObject $alreadyResolved = null,
         \SplStack $path = null
-    )
-    {
+    ) {
         if ($alreadyResolved == null) {
             $alreadyResolved = new \ArrayObject();
         }
@@ -117,6 +106,7 @@ class AstMap
 
         if (isset($alreadyResolved[$inheritDependency->getClassName()])) {
             $path->pop();
+
             return [];
         }
 

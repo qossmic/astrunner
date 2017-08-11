@@ -6,23 +6,21 @@ use SensioLabs\AstRunner\AstParser\AstClassReferenceInterface;
 
 class AstClassReference implements AstClassReferenceInterface
 {
+    private $className;
     private $fileReference;
 
-    private $className;
-
     /**
-     * AstClassReference constructor.
-     * @param $filepath
-     * @param $className
+     * @param string                $className
+     * @param AstFileReference|null $fileReference
      */
     public function __construct($className, AstFileReference $fileReference = null)
     {
-        $this->fileReference = $fileReference;
         $this->className = $className;
+        $this->fileReference = $fileReference;
     }
 
     /**
-     * @return AstFileReference
+     * @return AstFileReference|null
      */
     public function getFileReference()
     {
@@ -30,7 +28,7 @@ class AstClassReference implements AstClassReferenceInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getClassName()
     {
