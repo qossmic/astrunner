@@ -1,21 +1,21 @@
 <?php
 
 
-namespace SensioLabs\AstRunner\Tests\Visitor;
+namespace Tests\SensioLabs\AstRunner\Visitor;
 
 
 use SensioLabs\AstRunner\AstMap;
 use SensioLabs\AstRunner\AstParser\NikicPhpParser\NikicPhpParser;
 use SensioLabs\AstRunner\AstRunner;
-use SensioLabs\AstRunner\Tests\ArrayAsserts;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyClassB;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyClassC;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyTraitA;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyTraitB;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyTraitC;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyTraitClass;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyTraitD;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Tests\SensioLabs\AstRunner\ArrayAsserts;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyClassB;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyClassC;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyTraitA;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyTraitB;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyTraitC;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyTraitClass;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyTraitD;
 
 class AstMapGeneratorTest extends \PHPUnit_Framework_TestCase
 {
@@ -30,7 +30,7 @@ class AstMapGeneratorTest extends \PHPUnit_Framework_TestCase
         return (new AstRunner())->createAstMapByFiles(
             new NikicPhpParser(),
             new EventDispatcher(),
-            [new \SplFileInfo(__DIR__ . '/Fixtures/BasicDependency/' . $fixture . '.php')]
+            [new \SplFileInfo(__DIR__.'/Fixtures/BasicDependency/'.$fixture.'.php')]
         );
     }
 
@@ -55,16 +55,16 @@ class AstMapGeneratorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayValuesEquals(
             [
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyClassA::9 (Extends)',
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyClassInterfaceA::9 (Implements)'
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyClassA::9 (Extends)',
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyClassInterfaceA::9 (Implements)',
             ],
             $this->getDirectInherits(BasicDependencyClassB::class, $astMap)
         );
 
         $this->assertArrayValuesEquals(
             [
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyClassInterfaceA::13 (Implements)',
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyClassInterfaceB::13 (Implements)'
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyClassInterfaceA::13 (Implements)',
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyClassInterfaceB::13 (Implements)',
             ],
             $this->getDirectInherits(BasicDependencyClassC::class, $astMap)
         );
@@ -85,20 +85,20 @@ class AstMapGeneratorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertArrayValuesEquals(
-            ['SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyTraitB::7 (Uses)'],
+            ['Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyTraitB::7 (Uses)'],
             $this->getDirectInherits(BasicDependencyTraitC::class, $astMap)
         );
 
         $this->assertArrayValuesEquals(
             [
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyTraitA::10 (Uses)',
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyTraitB::11 (Uses)'
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyTraitA::10 (Uses)',
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyTraitB::11 (Uses)',
             ],
             $this->getDirectInherits(BasicDependencyTraitD::class, $astMap)
         );
 
         $this->assertArrayValuesEquals(
-            ['SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency\BasicDependencyTraitA::15 (Uses)'],
+            ['Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyTraitA::15 (Uses)'],
             $this->getDirectInherits(BasicDependencyTraitClass::class, $astMap)
         );
     }

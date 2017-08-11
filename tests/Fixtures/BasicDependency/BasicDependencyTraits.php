@@ -1,6 +1,6 @@
 <?php 
 
-namespace SensioLabs\AstRunner\Tests\Visitor\Fixtures\BasicDependency;
+namespace Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency;
 
 trait BasicDependencyTraitA {}
 trait BasicDependencyTraitB {}
