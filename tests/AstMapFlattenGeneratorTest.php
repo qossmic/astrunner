@@ -1,32 +1,29 @@
 <?php
 
-
-namespace SensioLabs\AstRunner\Tests;
-
+namespace Tests\SensioLabs\AstRunner;
 
 use SensioLabs\AstRunner\AstMap;
 use SensioLabs\AstRunner\AstParser\NikicPhpParser\NikicPhpParser;
 use SensioLabs\AstRunner\AstRunner;
-use SensioLabs\AstRunner\Tests\ArrayAsserts;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceA;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceB;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceC;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceD;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceE;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceA;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceB;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceC;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceD;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceE;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceWithNoiseA;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceWithNoiseB;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceWithNoiseC;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceA;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceA1;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceA2;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceB;
-use SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceC;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceA;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceB;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceC;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceD;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceE;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceA;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceB;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceC;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceD;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceE;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceWithNoiseA;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceWithNoiseB;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceWithNoiseC;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceA;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceA1;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceA2;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceB;
+use Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceC;
 
 class InheritanceDependencyVisitorTest extends \PHPUnit_Framework_TestCase
 {
@@ -48,17 +45,19 @@ class InheritanceDependencyVisitorTest extends \PHPUnit_Framework_TestCase
 
     private function getInheritedInherits($class, AstMap $astMap)
     {
-        return array_values(array_map(
-            function (AstMap\FlattenAstInherit $v) {
-                return $v->__toString();
-            },
-            array_filter(
-                $astMap->getClassInherits($class),
-                function (AstMap\AstInheritInterface $v) {
-                    return $v instanceof AstMap\FlattenAstInherit;
-                }
+        return array_values(
+            array_map(
+                function (AstMap\FlattenAstInherit $v) {
+                    return $v->__toString();
+                },
+                array_filter(
+                    $astMap->getClassInherits($class),
+                    function (AstMap\AstInheritInterface $v) {
+                        return $v instanceof AstMap\FlattenAstInherit;
+                    }
+                )
             )
-        ));
+        );
     }
 
     public function testBasicInheritance()
@@ -76,23 +75,23 @@ class InheritanceDependencyVisitorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertArrayValuesEquals(
-            ['SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceA::6 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceB::7 (Extends))'],
+            ['Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceA::6 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceB::7 (Extends))'],
             $this->getInheritedInherits(FixtureBasicInheritanceC::class, $astMap)
         );
 
         $this->assertArrayValuesEquals(
             [
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceA::6 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceC::8 (Extends) -> SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceB::7 (Extends))',
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceB::7 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceC::8 (Extends))'
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceA::6 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceC::8 (Extends) -> Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceB::7 (Extends))',
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceB::7 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceC::8 (Extends))',
             ],
             $this->getInheritedInherits(FixtureBasicInheritanceD::class, $astMap)
         );
 
         $this->assertArrayValuesEquals(
             [
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceA::6 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceD::9 (Extends) -> SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceC::8 (Extends) -> SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceB::7 (Extends))',
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceB::7 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceD::9 (Extends) -> SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceC::8 (Extends))',
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceC::8 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceD::9 (Extends))'
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceA::6 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceD::9 (Extends) -> Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceC::8 (Extends) -> Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceB::7 (Extends))',
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceB::7 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceD::9 (Extends) -> Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceC::8 (Extends))',
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceC::8 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceD::9 (Extends))',
             ],
             $this->getInheritedInherits(FixtureBasicInheritanceE::class, $astMap)
         );
@@ -114,23 +113,23 @@ class InheritanceDependencyVisitorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertArrayValuesEquals(
-            ['SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceA::6 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceB::7 (Extends))'],
+            ['Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceA::6 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceB::7 (Extends))'],
             $this->getInheritedInherits(FixtureBasicInheritanceInterfaceC::class, $astMap)
         );
 
         $this->assertArrayValuesEquals(
             [
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceA::6 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceC::8 (Extends) -> SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceB::7 (Extends))',
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceB::7 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceC::8 (Extends))'
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceA::6 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceC::8 (Extends) -> Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceB::7 (Extends))',
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceB::7 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceC::8 (Extends))',
             ],
             $this->getInheritedInherits(FixtureBasicInheritanceInterfaceD::class, $astMap)
         );
 
         $this->assertArrayValuesEquals(
             [
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceA::6 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceD::9 (Extends) -> SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceC::8 (Extends) -> SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceB::7 (Extends))',
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceB::7 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceD::9 (Extends) -> SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceC::8 (Extends))',
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceC::8 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceInterfaceD::9 (Extends))'
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceA::6 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceD::9 (Extends) -> Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceC::8 (Extends) -> Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceB::7 (Extends))',
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceB::7 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceD::9 (Extends) -> Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceC::8 (Extends))',
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceC::8 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceInterfaceD::9 (Extends))',
             ],
             $this->getInheritedInherits(FixtureBasicInheritanceInterfaceE::class, $astMap)
         );
@@ -158,18 +157,18 @@ class InheritanceDependencyVisitorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayValuesEquals(
             [
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceA1::7 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceA::8 (Extends))',
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceA2::7 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceA::8 (Extends))'
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceA1::7 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceA::8 (Extends))',
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceA2::7 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceA::8 (Extends))',
             ],
             $this->getInheritedInherits(MultipleInteritanceB::class, $astMap)
         );
 
         $this->assertArrayValuesEquals(
             [
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceA1::7 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceB::9 (Extends) -> SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceA::8 (Extends))',
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceA1::8 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceB::9 (Extends))',
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceA2::7 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceB::9 (Extends) -> SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceA::8 (Extends))',
-                'SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceA::8 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\MultipleInteritanceB::9 (Extends))'
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceA1::7 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceB::9 (Extends) -> Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceA::8 (Extends))',
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceA1::8 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceB::9 (Extends))',
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceA2::7 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceB::9 (Extends) -> Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceA::8 (Extends))',
+                'Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceA::8 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceB::9 (Extends))',
             ],
             $this->getInheritedInherits(MultipleInteritanceC::class, $astMap)
         );
@@ -192,7 +191,7 @@ class InheritanceDependencyVisitorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertArrayValuesEquals(
-            ['SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceWithNoiseA::18 (Extends) (path: SensioLabs\AstRunner\Tests\Visitor\Fixtures\FixtureBasicInheritanceWithNoiseB::19 (Extends))'],
+            ['Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceWithNoiseA::18 (Extends) (path: Tests\SensioLabs\AstRunner\Visitor\Fixtures\FixtureBasicInheritanceWithNoiseB::19 (Extends))'],
             $this->getInheritedInherits(FixtureBasicInheritanceWithNoiseC::class, $astMap)
         );
 
