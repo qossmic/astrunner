@@ -1,6 +1,6 @@
 <?php 
 
-namespace SensioLabs\AstRunner\Tests\Visitor\Fixtures;
+namespace Tests\SensioLabs\AstRunner\Visitor\Fixtures;
 
 class FixtureBasicInheritanceA { }
 class FixtureBasicInheritanceB extends FixtureBasicInheritanceA { }
