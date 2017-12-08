@@ -1,9 +1,8 @@
 <?php
 
-
 namespace Tests\SensioLabs\AstRunner\Visitor;
 
-
+use PHPUnit\Framework\TestCase;
 use SensioLabs\AstRunner\AstMap;
 use SensioLabs\AstRunner\AstParser\NikicPhpParser\NikicPhpParser;
 use SensioLabs\AstRunner\AstRunner;
@@ -17,7 +16,7 @@ use Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyT
 use Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyTraitClass;
 use Tests\SensioLabs\AstRunner\Visitor\Fixtures\BasicDependency\BasicDependencyTraitD;
 
-class AstMapGeneratorTest extends \PHPUnit_Framework_TestCase
+class AstMapGeneratorTest extends TestCase
 {
     use ArrayAsserts;
 
