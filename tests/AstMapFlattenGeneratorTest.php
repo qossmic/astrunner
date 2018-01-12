@@ -2,6 +2,7 @@
 
 namespace Tests\SensioLabs\AstRunner;
 
+use PHPUnit\Framework\TestCase;
 use SensioLabs\AstRunner\AstMap;
 use SensioLabs\AstRunner\AstParser\NikicPhpParser\NikicPhpParser;
 use SensioLabs\AstRunner\AstRunner;
@@ -25,7 +26,7 @@ use Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceA2;
 use Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceB;
 use Tests\SensioLabs\AstRunner\Visitor\Fixtures\MultipleInteritanceC;
 
-class InheritanceDependencyVisitorTest extends \PHPUnit_Framework_TestCase
+class InheritanceDependencyVisitorTest extends TestCase
 {
 
     use ArrayAsserts;
