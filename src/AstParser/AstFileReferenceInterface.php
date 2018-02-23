@@ -8,5 +8,4 @@ interface AstFileReferenceInterface
 
     /** @return AstClassReferenceInterface[] */
     public function getAstClassReferences();
-
 }

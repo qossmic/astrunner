@@ -1,43 +1,36 @@
-<?php 
+<?php
 
 namespace SensioLabs\AstRunner\AstMap;
 
 class AstInherit implements AstInheritInterface
 {
     private $className;
-
     private $line;
-
     private $type;
 
-    /**
-     * @param $className
-     * @param $line
-     * @param $type
-     */
-    private function __construct($className, $line, $type)
+    private function __construct(string $className, int $line, int $type)
     {
         $this->className = $className;
         $this->line = $line;
         $this->type = $type;
     }
 
-    public static function newExtends($className, $line)
+    public static function newExtends(string $className, int $line): self
     {
         return new self($className, $line, self::TYPE_EXTENDS);
     }
 
-    public static function newImplements($className, $line)
+    public static function newImplements(string $className, int $line): self
     {
         return new self($className, $line, self::TYPE_IMPLEMENTS);
     }
 
-    public static function newUses($className, $line)
+    public static function newUses(string $className, int $line): self
     {
         return new self($className, $line, self::TYPE_USES);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         switch ($this->type) {
             case static::TYPE_EXTENDS:
@@ -50,34 +43,32 @@ class AstInherit implements AstInheritInterface
                 $type = 'Implements';
                 break;
             default:
-                $type = "Unknown";;
+                $type = 'Unknown';
         }
 
         return "{$this->className}::{$this->line} ($type)";
     }
 
-    /** @return string */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->className;
     }
 
-    /** @return int */
-    public function getLine()
+    public function getLine(): int
     {
         return $this->line;
     }
 
-    /** @return int */
-    public function getType()
+    public function getType(): int
     {
         return $this->type;
     }
 
-    /** @return AstInheritInterface[] */
-    public function getPath()
+    /**
+     * @return AstInheritInterface[]
+     */
+    public function getPath(): array
     {
         return [];
     }
-
 }

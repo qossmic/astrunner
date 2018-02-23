@@ -9,21 +9,13 @@ class PostCreateAstMapEvent extends Event
 {
     private $astMap;
 
-    /**
-     * PreCreateAstMap constructor.
-     * @param $astMap
-     */
     public function __construct(AstMap $astMap)
     {
         $this->astMap = $astMap;
     }
 
-    /**
-     * @return AstMap
-     */
-    public function getAstMap()
+    public function getAstMap(): AstMap
     {
         return $this->astMap;
     }
-
 }

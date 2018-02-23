@@ -7,14 +7,16 @@ use SensioLabs\AstRunner\AstMap\AstInheritInterface;
 interface AstParserInterface extends AstReferenceInterface
 {
     /**
-     * @param $data
-     * @return AstClassReferenceInterface[]|AstFileReferenceInterface[]
+     * @param mixed $data
+     *
+     * @return AstParseResult
      */
-    public function parse($data);
+    public function parse($data): AstParseResult;
 
     /**
-     * @param $className
+     * @param string $className
+     *
      * @return AstInheritInterface[]
      */
-    public function findInheritanceByClassname($className);
+    public function findInheritanceByClassname(string $className): array;
 }

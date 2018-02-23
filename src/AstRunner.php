@@ -2,8 +2,6 @@
 
 namespace SensioLabs\AstRunner;
 
-use SensioLabs\AstRunner\AstParser\AstClassReferenceInterface;
-use SensioLabs\AstRunner\AstParser\AstFileReferenceInterface;
 use SensioLabs\AstRunner\AstParser\AstParserInterface;
 use SensioLabs\AstRunner\Event\AstFileAnalyzedEvent;
 use SensioLabs\AstRunner\Event\AstFileSyntaxErrorEvent;
@@ -16,7 +14,7 @@ class AstRunner
     /**
      * @param AstParserInterface       $astParser
      * @param EventDispatcherInterface $dispatcher
-     * @param array                    $files
+     * @param \SplFileInfo[]           $files
      *
      * @return AstMap
      */
@@ -24,23 +22,16 @@ class AstRunner
         AstParserInterface $astParser,
         EventDispatcherInterface $dispatcher,
         array $files
-    ) {
+    ): AstMap {
         $dispatcher->dispatch(PreCreateAstMapEvent::class, new PreCreateAstMapEvent(count($files)));
 
         $astMap = new AstMap($astParser);
 
         foreach ($files as $file) {
-
             try {
-                foreach ($astParser->parse($file) as $astReference) {
-                    if ($astReference instanceof AstClassReferenceInterface) {
-                        $astMap->addAstClassReference($astReference);
-                    } elseif ($astReference instanceof AstFileReferenceInterface) {
-                        $astMap->addAstFileReferences($astReference);
-                    } else {
-                        throw new \LogicException('unknown AST Type.');
-                    }
-                }
+                $result = $astParser->parse($file);
+                $astMap->addAstFileReference($result->getAstFileReference());
+                $astMap->addAstClassReferences($result->getAstClassReferences());
 
                 $dispatcher->dispatch(AstFileAnalyzedEvent::class, new AstFileAnalyzedEvent($file));
             } catch (\PhpParser\Error $e) {
