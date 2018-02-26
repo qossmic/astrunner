@@ -8,20 +8,13 @@ class AstFileAnalyzedEvent extends Event
 {
     private $file;
 
-    /**
-     * @param \SplFileInfo $file
-     */
     public function __construct(\SplFileInfo $file)
     {
         $this->file = $file;
     }
 
-    /**
-     * @return \SplFileInfo
-     */
-    public function getFile()
+    public function getFile(): \SplFileInfo
     {
         return $this->file;
     }
-
 }

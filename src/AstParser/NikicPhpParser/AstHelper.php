@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace SensioLabs\AstRunner\AstParser\NikicPhpParser;
 
@@ -9,37 +9,44 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Interface_;
 use PhpParser\Node\Stmt\Trait_;
 use PhpParser\Node\Stmt\Use_;
-use PhpParser\NodeVisitor;
 use SensioLabs\AstRunner\AstMap\AstInherit;
 use SensioLabs\AstRunner\AstMap\AstInheritInterface;
 
 class AstHelper
 {
-    static $cacheFindClassLikeNodes = [];
+    public static $cacheFindClassLikeNodes = [];
 
-    public static function findClassLikeNodes($nodes)
+    /**
+     * @param Node[]|array<Node[]> $nodes
+     *
+     * @return Node\Stmt\ClassLike[]
+     */
+    public static function findClassLikeNodes(array $nodes): array
     {
         $collectedNodes = [];
 
-        foreach ($nodes as $i => &$node) {
+        foreach ($nodes as $node) {
             if ($node instanceof Node\Stmt\ClassLike) {
                 $collectedNodes[] = $node;
             } elseif ($node instanceof Use_) {
                 continue;
             } elseif (is_array($node)) {
-                $collectedNodes = array_merge(static::findClassLikeNodes($node, false), $collectedNodes);
+                $collectedNodes = array_merge(
+                    static::findClassLikeNodes($node),
+                    $collectedNodes
+                );
             } elseif ($node instanceof Node) {
-                $collectedNodes = array_merge(static::findClassLikeNodes(
-                    static::getSubNodes($node),
-                    false
-                ), $collectedNodes);
+                $collectedNodes = array_merge(
+                    static::findClassLikeNodes(static::getSubNodes($node)),
+                    $collectedNodes
+                );
             }
         }
 
         return $collectedNodes;
     }
 
-    public static function walkNodes($nodes, callable $cb, \ArrayObject $bag = null)
+    public static function walkNodes(array $nodes, callable $cb, \ArrayObject $bag = null)
     {
         if (!$bag) {
             $bag = new \ArrayObject();
@@ -49,7 +56,6 @@ class AstHelper
             if (is_array($node)) {
                 static::walkNodes($node, $cb, $bag);
             } elseif ($node instanceof Node) {
-
                 if ($cb($node)) {
                     $bag->append($node);
                 }
@@ -63,14 +69,17 @@ class AstHelper
 
     /**
      * @param Node\Stmt\ClassLike $klass
+     *
      * @return AstInheritInterface[]
      */
-    public static function findInheritances(Node\Stmt\ClassLike $klass)
+    public static function findInheritances(Node\Stmt\ClassLike $klass): array
     {
         $buffer = [];
 
-        if ($klass instanceof Class_ && $klass->namespacedName instanceof Name) {
-
+        if ($klass instanceof Class_
+            && isset($klass->namespacedName)
+            && $klass->namespacedName instanceof Name
+        ) {
             if ($klass->extends instanceof Name) {
                 $buffer[] = AstInherit::newExtends(
                     $klass->extends->toString(),
@@ -80,7 +89,6 @@ class AstHelper
 
             if (!empty($klass->implements)) {
                 foreach ($klass->implements as $impl) {
-
                     if (!$impl instanceof Name) {
                         continue;
                     }
@@ -124,12 +132,13 @@ class AstHelper
         return $buffer;
     }
 
-    public static function getSubNodes(Node $node)
+    public static function getSubNodes(Node $node): array
     {
         $subnodes = [];
         foreach ($node->getSubNodeNames() as $name) {
             $subnodes[] = $node->$name;
         }
+
         return $subnodes;
     }
 }

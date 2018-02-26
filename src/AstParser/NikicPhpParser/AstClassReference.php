@@ -9,11 +9,7 @@ class AstClassReference implements AstClassReferenceInterface
     private $className;
     private $fileReference;
 
-    /**
-     * @param string                $className
-     * @param AstFileReference|null $fileReference
-     */
-    public function __construct($className, AstFileReference $fileReference = null)
+    public function __construct(string $className, AstFileReference $fileReference = null)
     {
         $this->className = $className;
         $this->fileReference = $fileReference;
@@ -27,12 +23,8 @@ class AstClassReference implements AstClassReferenceInterface
         return $this->fileReference;
     }
 
-    /**
-     * @return string
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->className;
     }
-
 }

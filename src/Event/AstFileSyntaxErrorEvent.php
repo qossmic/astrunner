@@ -10,31 +10,19 @@ class AstFileSyntaxErrorEvent extends Event
 
     private $syntaxError;
 
-    /**
-     * AstFileSyntaxErrorEvent constructor.
-     * @param $filepath
-     * @param $syntaxError
-     */
-    public function __construct(\SplFileInfo $file, $syntaxError)
+    public function __construct(\SplFileInfo $file, string $syntaxError)
     {
         $this->file = $file;
         $this->syntaxError = $syntaxError;
     }
 
-    /**
-     * @return \SplFileInfo
-     */
-    public function getFile()
+    public function getFile(): \SplFileInfo
     {
         return $this->file;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSyntaxError()
+    public function getSyntaxError(): string
     {
         return $this->syntaxError;
     }
-
 }

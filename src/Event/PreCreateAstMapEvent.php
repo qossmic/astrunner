@@ -8,22 +8,13 @@ class PreCreateAstMapEvent extends Event
 {
     private $expectedFileCount;
 
-    /**
-     * PreCreateAstMapEvent constructor.
-     * @param $expectedFileCount
-     */
-    public function __construct($expectedFileCount)
+    public function __construct(int $expectedFileCount)
     {
         $this->expectedFileCount = $expectedFileCount;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getExpectedFileCount()
+    public function getExpectedFileCount(): int
     {
         return $this->expectedFileCount;
     }
-
-
 }

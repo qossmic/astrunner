@@ -7,11 +7,9 @@ use SensioLabs\AstRunner\AstParser\AstFileReferenceInterface;
 class AstFileReference implements AstFileReferenceInterface
 {
     private $filepath;
-
     private $astClassReferences;
 
-    /** @param $filepath */
-    public function __construct($filepath)
+    public function __construct(string $filepath)
     {
         $this->filepath = $filepath;
     }
@@ -33,5 +31,4 @@ class AstFileReference implements AstFileReferenceInterface
     {
         return $this->astClassReferences;
     }
-
 }

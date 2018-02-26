@@ -7,17 +7,22 @@ use SensioLabs\AstRunner\AstMap\FlattenAstInherit;
 use SensioLabs\AstRunner\AstParser\AstClassReferenceInterface;
 use SensioLabs\AstRunner\AstParser\AstFileReferenceInterface;
 use SensioLabs\AstRunner\AstParser\AstParserInterface;
-use SensioLabs\AstRunner\AstParser\NikicPhpParser\AstClassReference;
 
 class AstMap
 {
-    /** @var AstClassReference[] */
+    /**
+     * @var AstClassReferenceInterface[]
+     */
     private $astClassReferences = [];
 
-    /** @var array */
+    /**
+     * @var AstFileReferenceInterface[]
+     */
     private $astFileReferences = [];
 
-    /** @var AstParserInterface */
+    /**
+     * @var AstParserInterface
+     */
     private $astParser;
 
     public function __construct(AstParserInterface $astParser)
@@ -30,7 +35,17 @@ class AstMap
         $this->astClassReferences[$astClassReference->getClassName()] = $astClassReference;
     }
 
-    public function addAstFileReferences(AstFileReferenceInterface $astFileReference)
+    /**
+     * @param AstClassReferenceInterface[] $astClassReferences
+     */
+    public function addAstClassReferences(array $astClassReferences)
+    {
+        foreach ($astClassReferences as $astClassReference) {
+            $this->addAstClassReference($astClassReference);
+        }
+    }
+
+    public function addAstFileReference(AstFileReferenceInterface $astFileReference)
     {
         $this->astFileReferences[$astFileReference->getFilepath()] = $astFileReference;
     }
@@ -38,7 +53,7 @@ class AstMap
     /**
      * @return AstClassReferenceInterface[]
      */
-    public function getAstClassReferences()
+    public function getAstClassReferences(): array
     {
         return $this->astClassReferences;
     }
@@ -46,29 +61,27 @@ class AstMap
     /**
      * @return AstFileReferenceInterface[]
      */
-    public function getAstFileReferences()
+    public function getAstFileReferences(): array
     {
         return $this->astFileReferences;
     }
 
     /**
-     * @param $className
-     * @return null|AstClassReference
+     * @param string $className
+     *
+     * @return null|AstClassReferenceInterface
      */
-    public function getClassReferenceByClassName($className)
+    public function getClassReferenceByClassName(string $className)
     {
-        if (!isset($this->astClassReferences[$className])) {
-            return null;
-        }
-
-        return $this->astClassReferences[$className];
+        return $this->astClassReferences[$className] ?? null;
     }
 
     /**
-     * @param $className
+     * @param string $className
+     *
      * @return AstInheritInterface[]
      */
-    public function getClassInherits($className)
+    public function getClassInherits(string $className): array
     {
         $buffer = [];
 
@@ -89,17 +102,18 @@ class AstMap
      * @param AstInheritInterface $inheritDependency
      * @param \ArrayObject|null   $alreadyResolved
      * @param \SplStack|null      $path
-     * @return array
+     *
+     * @return AstInheritInterface[]
      */
     private function resolveDepsRecursive(
         AstInheritInterface $inheritDependency,
         \ArrayObject $alreadyResolved = null,
         \SplStack $path = null
-    ) {
-        if ($alreadyResolved == null) {
+    ): array {
+        if (null === $alreadyResolved) {
             $alreadyResolved = new \ArrayObject();
         }
-        if ($path == null) {
+        if (null === $path) {
             $path = new \SplStack();
             $path->push($inheritDependency);
         }
@@ -125,6 +139,4 @@ class AstMap
 
         return $buffer;
     }
-
-
 }

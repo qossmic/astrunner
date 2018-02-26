@@ -1,59 +1,52 @@
-<?php 
+<?php
 
 namespace SensioLabs\AstRunner\AstMap;
 
 class FlattenAstInherit implements AstInheritInterface
 {
-    /** @var AstInherit[] */
     private $path;
-
-    /** @var AstInherit */
     private $inherit;
 
     /**
-     * @param AstInherit $inherit
-     * @param array $path
+     * @param AstInheritInterface   $inherit
+     * @param AstInheritInterface[] $path
      */
-    public function __construct(AstInherit $inherit, array $path)
+    public function __construct(AstInheritInterface $inherit, array $path)
     {
         $this->path = $path;
         $this->inherit = $inherit;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         $buffer = '';
         foreach ($this->path as $v) {
-            $buffer = "{$v->__toString()} -> " . $buffer;
+            $buffer = "{$v->__toString()} -> ".$buffer;
         }
+
         return "{$this->inherit->__toString()} (path: ".rtrim($buffer, ' -> ').')';
     }
 
-    /** @return AstInherit[] */
-    public function getPath()
+    /**
+     * @return AstInheritInterface[]
+     */
+    public function getPath(): array
     {
         return $this->path;
     }
 
-    /** @return string */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->inherit->getClassName();
     }
 
-    /** @return int */
-    public function getLine()
+    public function getLine(): int
     {
         return $this->inherit->getLine();
     }
 
-    /** @return int */
-    public function getType()
+    public function getType(): int
     {
         return $this->inherit->getType();
     }
-
 }
