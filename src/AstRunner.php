@@ -11,19 +11,22 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AstRunner
 {
+    private $dispatcher;
+
+    public function __construct(EventDispatcherInterface $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
+    }
+
     /**
      * @param AstParserInterface       $astParser
-     * @param EventDispatcherInterface $dispatcher
      * @param \SplFileInfo[]           $files
      *
      * @return AstMap
      */
-    public function createAstMapByFiles(
-        AstParserInterface $astParser,
-        EventDispatcherInterface $dispatcher,
-        array $files
-    ): AstMap {
-        $dispatcher->dispatch(PreCreateAstMapEvent::class, new PreCreateAstMapEvent(count($files)));
+    public function createAstMapByFiles(AstParserInterface $astParser, array $files): AstMap
+    {
+        $this->dispatcher->dispatch(PreCreateAstMapEvent::class, new PreCreateAstMapEvent(count($files)));
 
         $astMap = new AstMap($astParser);
 
@@ -33,16 +36,16 @@ class AstRunner
                 $astMap->addAstFileReference($result->getAstFileReference());
                 $astMap->addAstClassReferences($result->getAstClassReferences());
 
-                $dispatcher->dispatch(AstFileAnalyzedEvent::class, new AstFileAnalyzedEvent($file));
+                $this->dispatcher->dispatch(AstFileAnalyzedEvent::class, new AstFileAnalyzedEvent($file));
             } catch (\PhpParser\Error $e) {
-                $dispatcher->dispatch(
+                $this->dispatcher->dispatch(
                     AstFileSyntaxErrorEvent::class,
                     new AstFileSyntaxErrorEvent($file, $e->getMessage())
                 );
             }
         }
 
-        $dispatcher->dispatch(PostCreateAstMapEvent::class, new PostCreateAstMapEvent($astMap));
+        $this->dispatcher->dispatch(PostCreateAstMapEvent::class, new PostCreateAstMapEvent($astMap));
 
         return $astMap;
     }

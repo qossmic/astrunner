@@ -26,9 +26,8 @@ class AstMapGeneratorTest extends TestCase
      */
     private function getAstMap($fixture)
     {
-        return (new AstRunner())->createAstMapByFiles(
+        return (new AstRunner(new EventDispatcher()))->createAstMapByFiles(
             new NikicPhpParser(),
-            new EventDispatcher(),
             [new \SplFileInfo(__DIR__.'/Fixtures/BasicDependency/'.$fixture.'.php')]
         );
     }
