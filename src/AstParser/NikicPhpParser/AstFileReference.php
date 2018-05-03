@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SensioLabs\AstRunner\AstParser\NikicPhpParser;
 
 use SensioLabs\AstRunner\AstParser\AstFileReferenceInterface;
@@ -12,22 +14,23 @@ class AstFileReference implements AstFileReferenceInterface
     public function __construct(string $filepath)
     {
         $this->filepath = $filepath;
+        $this->astClassReferences = [];
     }
 
-    /** @param AstClassReference[] $astClassReferences */
-    public function setAstClassReferences(array $astClassReferences)
+    public function addClassReference(string $className)
     {
-        $this->astClassReferences = $astClassReferences;
+        $this->astClassReferences[] = new AstClassReference($className, $this);
     }
 
-    /** @return mixed */
-    public function getFilepath()
+    public function getFilepath(): string
     {
         return $this->filepath;
     }
 
-    /** @return AstClassReference[] */
-    public function getAstClassReferences()
+    /**
+     * @return AstClassReference[]
+     */
+    public function getAstClassReferences(): array
     {
         return $this->astClassReferences;
     }

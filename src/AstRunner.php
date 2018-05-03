@@ -19,8 +19,8 @@ class AstRunner
     }
 
     /**
-     * @param AstParserInterface       $astParser
-     * @param \SplFileInfo[]           $files
+     * @param AstParserInterface $astParser
+     * @param \SplFileInfo[]     $files
      *
      * @return AstMap
      */
@@ -32,9 +32,7 @@ class AstRunner
 
         foreach ($files as $file) {
             try {
-                $result = $astParser->parse($file);
-                $astMap->addAstFileReference($result->getAstFileReference());
-                $astMap->addAstClassReferences($result->getAstClassReferences());
+                $astMap->addAstFileReference($astParser->parse($file));
 
                 $this->dispatcher->dispatch(AstFileAnalyzedEvent::class, new AstFileAnalyzedEvent($file));
             } catch (\PhpParser\Error $e) {

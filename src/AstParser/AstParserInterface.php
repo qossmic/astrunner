@@ -9,9 +9,9 @@ interface AstParserInterface extends AstReferenceInterface
     /**
      * @param mixed $data
      *
-     * @return AstParseResult
+     * @return AstFileReferenceInterface
      */
-    public function parse($data): AstParseResult;
+    public function parse($data): AstFileReferenceInterface;
 
     /**
      * @param string $className
