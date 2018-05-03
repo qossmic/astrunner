@@ -9,7 +9,6 @@ use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use SensioLabs\AstRunner\AstMap\AstInheritInterface;
 use SensioLabs\AstRunner\AstParser\AstFileReferenceInterface;
-use SensioLabs\AstRunner\AstParser\AstParseResult;
 use SensioLabs\AstRunner\AstParser\AstParserInterface;
 
 class NikicPhpParser implements AstParserInterface
@@ -52,7 +51,7 @@ class NikicPhpParser implements AstParserInterface
         return 'php' === strtolower($data->getExtension());
     }
 
-    public function parse($data): AstParseResult
+    public function parse($data): AstFileReferenceInterface
     {
         /** @var \SplFileInfo $data */
         if (!$this->supports($data)) {
@@ -67,7 +66,6 @@ class NikicPhpParser implements AstParserInterface
 
         self::$fileAstMap[$data->getRealPath()] = $ast;
 
-        $classReferences = [];
         $fileReference = new AstFileReference($data->getRealPath());
 
         foreach (AstHelper::findClassLikeNodes($ast) as $classLikeNode) {
@@ -77,13 +75,11 @@ class NikicPhpParser implements AstParserInterface
                 $className = (string) $classLikeNode->name;
             }
 
-            $classReferences[] = new AstClassReference($className, $fileReference);
+            $fileReference->addClassReference($className);
             self::$classAstMap[$className] = $classLikeNode;
         }
 
-        $fileReference->setAstClassReferences($classReferences);
-
-        return new AstParseResult($fileReference, $classReferences);
+        return $fileReference;
     }
 
     /**

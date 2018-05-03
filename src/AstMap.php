@@ -30,24 +30,13 @@ class AstMap
         $this->astParser = $astParser;
     }
 
-    public function addAstClassReference(AstClassReferenceInterface $astClassReference)
-    {
-        $this->astClassReferences[$astClassReference->getClassName()] = $astClassReference;
-    }
-
-    /**
-     * @param AstClassReferenceInterface[] $astClassReferences
-     */
-    public function addAstClassReferences(array $astClassReferences)
-    {
-        foreach ($astClassReferences as $astClassReference) {
-            $this->addAstClassReference($astClassReference);
-        }
-    }
-
     public function addAstFileReference(AstFileReferenceInterface $astFileReference)
     {
         $this->astFileReferences[$astFileReference->getFilepath()] = $astFileReference;
+
+        foreach ($astFileReference->getAstClassReferences() as $astClassReference) {
+            $this->addAstClassReference($astClassReference);
+        }
     }
 
     /**
@@ -87,11 +76,9 @@ class AstMap
 
         foreach ($this->astParser->findInheritanceByClassname($className) as $dep) {
             $buffer[] = $dep;
-        }
 
-        foreach ($this->astParser->findInheritanceByClassname($className) as $classInherit) {
-            foreach ($this->resolveDepsRecursive($classInherit) as $dep) {
-                $buffer[] = $dep;
+            foreach ($this->resolveDepsRecursive($dep) as $recDep) {
+                $buffer[] = $recDep;
             }
         }
 
@@ -138,5 +125,10 @@ class AstMap
         }
 
         return $buffer;
+    }
+
+    private function addAstClassReference(AstClassReferenceInterface $astClassReference)
+    {
+        $this->astClassReferences[$astClassReference->getClassName()] = $astClassReference;
     }
 }
