@@ -1,5 +1,6 @@
 {
     "name": "sensiolabs-de/astrunner",
+    "description": "Astrunner is a low level lib that helps to run static code analysis",
     "type": "library",
     "license": "MIT",
     "require": {
@@ -24,6 +25,11 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\SensioLabs\\AstRunner\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
         }
     }
 }
