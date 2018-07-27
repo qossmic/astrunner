@@ -4,10 +4,7 @@ namespace SensioLabs\AstRunner\AstParser;
 
 interface AstClassReferenceInterface extends AstReferenceInterface
 {
-    /**
-     * @return AstFileReferenceInterface|null
-     */
-    public function getFileReference();
+    public function getFileReference(): ?AstFileReferenceInterface;
 
     public function getClassName(): string;
 }

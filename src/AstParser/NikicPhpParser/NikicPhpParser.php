@@ -92,12 +92,7 @@ class NikicPhpParser implements AstParserInterface
         return self::$fileAstMap[$astReference->getFilepath()] ?? [];
     }
 
-    /**
-     * @param string $className
-     *
-     * @return null|Node
-     */
-    public function getAstForClassname(string $className)
+    public function getAstForClassname(string $className): ?Node
     {
         return self::$classAstMap[$className] ?? null;
     }
