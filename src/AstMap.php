@@ -30,7 +30,7 @@ class AstMap
         $this->astParser = $astParser;
     }
 
-    public function addAstFileReference(AstFileReferenceInterface $astFileReference)
+    public function addAstFileReference(AstFileReferenceInterface $astFileReference): void
     {
         $this->astFileReferences[$astFileReference->getFilepath()] = $astFileReference;
 
@@ -55,12 +55,7 @@ class AstMap
         return $this->astFileReferences;
     }
 
-    /**
-     * @param string $className
-     *
-     * @return null|AstClassReferenceInterface
-     */
-    public function getClassReferenceByClassName(string $className)
+    public function getClassReferenceByClassName(string $className): ?AstClassReferenceInterface
     {
         return $this->astClassReferences[$className] ?? null;
     }
@@ -127,7 +122,7 @@ class AstMap
         return $buffer;
     }
 
-    private function addAstClassReference(AstClassReferenceInterface $astClassReference)
+    private function addAstClassReference(AstClassReferenceInterface $astClassReference): void
     {
         $this->astClassReferences[$astClassReference->getClassName()] = $astClassReference;
     }

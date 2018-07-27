@@ -3,6 +3,7 @@
 namespace SensioLabs\AstRunner\AstParser\NikicPhpParser;
 
 use SensioLabs\AstRunner\AstParser\AstClassReferenceInterface;
+use SensioLabs\AstRunner\AstParser\AstFileReferenceInterface;
 
 class AstClassReference implements AstClassReferenceInterface
 {
@@ -15,10 +16,7 @@ class AstClassReference implements AstClassReferenceInterface
         $this->fileReference = $fileReference;
     }
 
-    /**
-     * @return AstFileReference|null
-     */
-    public function getFileReference()
+    public function getFileReference(): ?AstFileReferenceInterface
     {
         return $this->fileReference;
     }

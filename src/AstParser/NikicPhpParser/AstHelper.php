@@ -46,7 +46,7 @@ class AstHelper
         return $collectedNodes;
     }
 
-    public static function walkNodes(array $nodes, callable $cb, \ArrayObject $bag = null)
+    public static function walkNodes(array $nodes, callable $cb, \ArrayObject $bag = null): \ArrayObject
     {
         if (!$bag) {
             $bag = new \ArrayObject();
